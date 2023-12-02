@@ -9,7 +9,7 @@ public class UnitTest1
     {
         var day1 = new Day1(new Day1FakeFileHandler());
         var result = new TestExecutor(day1).Execute(1);
-        Assert.Equal("77", await result);
+        Assert.Equal("142", await result);
     }
 
     private class TestExecutor

@@ -21,7 +21,7 @@ public class Day1 : IJob
     private static int PartOne(IEnumerable<string> lines)
     {
         return lines.Select(x => PartOneParse(x))
-            .Select(x => x.Item1 + x.Item2)
+            .Select(x => int.Parse($"{x.Item1}{x.Item2}"))
             .Sum();
     }
 
