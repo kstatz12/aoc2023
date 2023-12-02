@@ -1,4 +1,5 @@
 namespace AOC2023.Jobs;
+using System.Text.RegularExpressions;
 
 public class Day1 : IJob
 {
@@ -13,9 +14,16 @@ public class Day1 : IJob
         return part switch
         {
             1 => PartOne(lines).ToString(),
-            2 => "Not implemented",
+            2 => PartTwo(lines).ToString(),
             _ => throw new ArgumentException("Invalid part", nameof(part))
         };
+    }
+
+    private static int PartTwo(IEnumerable<string> lines)
+    {
+        return lines.Select(x=> PartTwoParse(x))
+            .Select(x => int.Parse($"{x.Item1}{x.Item2}"))
+            .Sum();
     }
 
     private static int PartOne(IEnumerable<string> lines)
@@ -25,35 +33,53 @@ public class Day1 : IJob
             .Sum();
     }
 
+    private static (int, int) PartTwoParse(string line)
+    {
+        return (Seek2(line, RegexOptions.None), Seek2(line, RegexOptions.RightToLeft));
+    }
+
     private static (int, int) PartOneParse(string line)
     {
-        return (Forwards(line), Backwards(line));
+        return (Seek(line), Seek(Reverse(line)));
     }
 
-    private static int Forwards(string input)
+    private static string Reverse(string input)
     {
-        foreach (var s in input)
-        {
-            var (success, value) = CharToInt(s);
-            if (success)
-            {
-                return value;
-            }
-        }
-        throw new ArgumentException("Input is not a number", nameof(input));
+        var chars = input.ToCharArray();
+        Array.Reverse(chars);
+        return new string(chars);
     }
 
-    private static int Backwards(string input)
+    private static int Seek2(string input, RegexOptions options)
     {
-        foreach (var s in input.Reverse())
+        var match = Match(input, options);
+        if(int.TryParse(match, out var result))
         {
-            var (success, value) = CharToInt(s);
-            if (success)
+            return result;
+        }
+        throw new ArgumentException($"Input {input} is not a number", nameof(input));
+    }
+
+    private static int Seek(string input)
+    {
+        foreach(var c in input)
+        {
+            var (success, result) = CharToInt(c);
+            if(success)
             {
-                return value;
+                return result;
             }
         }
-        throw new ArgumentException("Input is not a number", nameof(input));
+        throw new ArgumentException($"Input is not a number {input}");
+    }
+
+    private static string BuildRegex() => @"\b(?:[0-9]+|one|two|three|four|five|six|seven|eight|nine)\b";
+
+    private static string Match(string input, RegexOptions options = RegexOptions.RightToLeft)
+    {
+        var pattern = BuildRegex();
+        var matches = Regex.Matches(input, pattern, options);
+        return matches.FirstOrDefault()?.Value ?? string.Empty;
     }
 
     private static (bool, int) CharToInt(char c) => c switch
