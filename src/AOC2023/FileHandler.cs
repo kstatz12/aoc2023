@@ -18,5 +18,6 @@ public class FileHandler : IFileHandler
                 lines.Add(line);
             }
         }
+        return lines;
     }
 }

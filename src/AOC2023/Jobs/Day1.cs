@@ -9,11 +9,6 @@ public class Day1 : IJob
     }
     public async Task<string> Run(string input, int part)
     {
-        if (string.IsNullOrEmpty(input))
-        {
-            throw new ArgumentException("Input is null or empty", nameof(input));
-        }
-
         var lines = await this.fileHandler.ReadLines(input);
         return part switch
         {
@@ -52,7 +47,7 @@ public class Day1 : IJob
     {
         foreach (var s in input.Reverse())
         {
-            var (success, value) = CharToInt(input[i]);
+            var (success, value) = CharToInt(s);
             if (success)
             {
                 return value;
