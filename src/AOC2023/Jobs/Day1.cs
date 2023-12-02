@@ -15,7 +15,6 @@ public class Day1 : IJob
         }
 
         var lines = await this.fileHandler.ReadLines(input);
-
         return part switch
         {
             1 => PartOne(lines).ToString(),
@@ -26,8 +25,9 @@ public class Day1 : IJob
 
     private static int PartOne(IEnumerable<string> lines)
     {
-        var numbers = lines.Select(x => PartOneParse(x)).ToList();
-        return -1;
+        return lines.Select(x => PartOneParse(x))
+            .Select(x => x.Item1 + x.Item2)
+            .Sum();
     }
 
     private static (int, int) PartOneParse(string line)
