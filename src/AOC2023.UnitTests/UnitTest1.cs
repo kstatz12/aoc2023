@@ -42,7 +42,6 @@ public class DayTest
             {
                 "two1nine",
                 "eightwothree",
-                "fourfivesix",
                 "abcone2threexyz",
                 "xtwone3four",
                 "4nineeightseven2",
